@@ -703,12 +703,12 @@
   <customwidget>
    <class>Kilo::WidgetAxis</class>
    <extends>QOpenGLWidget</extends>
-   <header>src/WidgetAxis.hpp</header>
+   <header>include/WidgetAxis.hpp</header>
   </customwidget>
   <customwidget>
    <class>Kilo::WidgetModel</class>
    <extends>QOpenGLWidget</extends>
-   <header>src/WidgetModel.hpp</header>
+   <header>include/WidgetModel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

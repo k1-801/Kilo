@@ -128,12 +128,12 @@
   <customwidget>
    <class>Kilo::WidgetParticleList</class>
    <extends>QTreeWidget</extends>
-   <header>src/WidgetParticleList.hpp</header>
+   <header>include/WidgetParticleList.hpp</header>
   </customwidget>
   <customwidget>
    <class>Kilo::WidgetParticle</class>
    <extends>QTableWidget</extends>
-   <header>src/WidgetParticle.hpp</header>
+   <header>include/WidgetParticle.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>
