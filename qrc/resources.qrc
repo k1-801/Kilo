@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>lang/Kilo_en.qm</file>
+        <file>lang/Kilo_ru.qm</file>
+        <file>img/logo.png</file>
+    </qresource>
+</RCC>
