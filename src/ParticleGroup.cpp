@@ -17,22 +17,12 @@ REGISTER_IN_FACTORY(Kilo, AbstractParticle, Kilo, ParticleGroup)
 
 namespace Kilo
 {
-    ParticleGroup::ParticleGroup() : AbstractParticle(){}
-    ParticleGroup::~ParticleGroup(){}
-
-    QVector<ParticleField*>& ParticleGroup::getFields()
+    ParticleGroup::ParticleGroup() : AbstractParticle()
     {
-        static QVector<ParticleField*> _fields;
-        if(_fields.isEmpty())
-        {
-            _fields.push_back(new ParticleFieldLongDouble(tr("Charge"), false, _charge));
-            //_fields.push_back(new ParticleFieldVector3   (tr("Color"),  false, _color));
-            _fields.push_back(new ParticleFieldVector3   (tr("Coord"),  false, _traectory.back()));
-            _fields.push_back(new ParticleFieldLongDouble(tr("Mass"),   false, _mass));
-            _fields.push_back(new ParticleFieldLongDouble(tr("Radius"), false, _radius));
-        }
-        return _fields;
+        _fields.push_back(new ParticleFieldLongDouble(tr("Mass"),   false, _mass));
+        _fields.push_back(new ParticleFieldLongDouble(tr("Radius"), false, _radius));
     }
+    ParticleGroup::~ParticleGroup(){}
 
     long double ParticleGroup::getCharge() const {return _charge;}
     QColor      ParticleGroup::getColor () const {return _color;}
@@ -41,7 +31,7 @@ namespace Kilo
 
     void ParticleGroup::updateCoord()
     {
-        for(AbstractParticle* i : _children)
+        for(std::shared_ptr<AbstractParticle> i : _children)
         {
             i->updateCoord();
         }
@@ -49,7 +39,7 @@ namespace Kilo
 
     void ParticleGroup::updateForce()
     {
-        for(AbstractParticle* i : _children)
+        for(ParticleS i : _children)
         {
             i->updateForce();
         }
@@ -57,7 +47,8 @@ namespace Kilo
 
     bool ParticleGroup::updateGroup()
     {
-        if(!_parent)
+        ParticleS p = _parent.lock();
+        if(!p)
         {
             Core::getInstance().error("ParticleGroup without a parent!");
             exit(EXIT_FAILURE);
@@ -65,7 +56,7 @@ namespace Kilo
         bool b = false;
 
         // Update children
-        for(AbstractParticle* c : _children)
+        for(ParticleS c : _children)
         {
             c->updateGroup();
         }
@@ -74,7 +65,7 @@ namespace Kilo
         long double r;
 
         // Check siblings for possible merging
-        for(AbstractParticle* c : _parent->getChildren())
+        for(ParticleS c : p->getChildren())
         {
             if((c->getCoord() - getCoord()).length() < _radius)
             {
@@ -91,7 +82,7 @@ namespace Kilo
         _radius = 0;
 
         uint64_t sr = 0, sg = 0, sb = 0;
-        for(AbstractParticle* c : _children)
+        for(ParticleS c : _children)
         {
             _charge       += c->getCharge();
             _traectory.back() += c->getCoord() * c->getMass();
@@ -103,7 +94,7 @@ namespace Kilo
         _color.setRgb(sr / _children.size(), sg / _children.size(), sb / _children.size());
         _traectory.back() /= _children.size() * _mass;
 
-        for(AbstractParticle* c : _children)
+        for(ParticleS c : _children)
         {
             r = (c->getCoord() - _traectory.back()).length() + c->getRadius();
             if( _radius < r)
@@ -115,7 +106,7 @@ namespace Kilo
     void ParticleGroup::smartClean()
     {
         AbstractParticle::smartClean();
-        for(AbstractParticle* i : _children)
+        for(ParticleS i : _children)
         {
             i->smartClean();
         }

@@ -9,7 +9,7 @@
  */
 
 // Qt
-#include <QEventLoop>
+#include <QCoreApplication>
 // Kilo
 #include "../include/Core.hpp"
 #include "../include/Universe.hpp"

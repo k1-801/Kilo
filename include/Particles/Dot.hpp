@@ -40,14 +40,10 @@ namespace Kilo
             Q_INVOKABLE Dot();
             ~Dot();
 
-            const QVector<ParticleField*>& getFields() override;
-            QColor                   getColor () const override;
-            long double              getCharge() const override;
-            long double              getMass  () const override;
-            long double              getRadius() const override;
-
-            void getData(QTextStream&) const override;
-            void setData(QTextStream&) override;
+            QColor      getColor () const override;
+            long double getCharge() const override;
+            long double getMass  () const override;
+            long double getRadius() const override;
     };
 }
 

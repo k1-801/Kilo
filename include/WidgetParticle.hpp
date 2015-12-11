@@ -29,13 +29,13 @@ namespace Kilo
         Q_OBJECT
 
         protected:
-            AbstractParticle* _p;
+            ParticleW _p;
 
             void _update();
 
         public:
             WidgetParticle(QWidget* = 0);
-            void setParticle(AbstractParticle*);
+            void setParticle(ParticleW);
     };
 }
 

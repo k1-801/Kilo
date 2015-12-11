@@ -16,7 +16,10 @@
 
 namespace Kilo
 {
-    Universe:: Universe() : ParticleGroup(){}
+    Universe:: Universe() : ParticleGroup()
+    {
+        _fields.clear(); // Universe is a static entity and should have no data to read.
+    }
     Universe::~Universe(){}
 
     Universe& Universe::getInstance()
@@ -27,7 +30,7 @@ namespace Kilo
 
     bool Universe::updateGroup()
     {
-        for(AbstractParticle* i : _children)
+        for(ParticleS i : _children)
         {
             i->updateGroup();
         }

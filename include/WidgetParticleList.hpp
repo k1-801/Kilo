@@ -29,9 +29,9 @@ namespace Kilo
     class WidgetParticleList : public QTreeWidget
     {
         private:
-            std::map <QTreeWidgetItem*, std::pair<AbstractParticle*, int>> _c;
+            std::map <QTreeWidgetItem*, std::pair<ParticleS, int> > _c;
 
-            void _load(QTreeWidgetItem*, AbstractParticle*, int = 0);
+            void _load(QTreeWidgetItem*, ParticleW, int = 0);
 
         public:
             WidgetParticleList(QWidget* = 0);

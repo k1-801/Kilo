@@ -85,4 +85,18 @@ namespace Kilo
     };
 }
 
+#define CATCH(fun) \
+    catch(Hcl::Exception& e) \
+    { \
+        Core::getInstance().error(tr("%1(): %2").arg(fun).arg(e.getText())); \
+    } \
+    catch(std::exception& e) \
+    { \
+        Core::getInstance().error(tr("%1() cought an std::exception: %2").arg(fun).arg(e.what())); \
+    } \
+    catch(...) \
+    { \
+        Core::getInstance().error(tr("%1() cought an unknown exception").arg(fun)); \
+    }
+
 #endif // KILO_CORE_HPP_INCLUDED

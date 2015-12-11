@@ -13,12 +13,14 @@
 // C++
 #include <memory>
 // Qt
+#include <QDebug>
 #include <QOpenGLWidget>
 // GL
 #include <GL/glu.h>
 // HCL
 #include <HCL/Factory.hpp>
 #include <HCL/Vector3.hpp>
+#include <HCL/Operators.hpp>
 // Kilo
 #include "../include/Core.hpp"
 #include "../include/Phy.hpp"
@@ -30,26 +32,48 @@ namespace Kilo
         _sc_index = 0;
         _traectory.clear();
         _traectory.push_back(0);
-        _parent = 0;
+        _parent.reset();
+        _fields.push_back(new ParticleFieldVector3 (tr("Coord"),  true, _traectory.back()));
+        _fields.push_back(new ParticleFieldVector3 (tr("Force"),  true, _force));
+        _fields.push_back(new ParticleFieldVector3 (tr("Speed"),  true, _speed));
     }
     AbstractParticle::~AbstractParticle(){}
 
-    void AbstractParticle::_addChild(AbstractParticle* p)
+    void AbstractParticle::_addChild(ParticleW p)
     {
-        _children.push_back(p);
+        ParticleS pw = p.lock();
+        if(pw)
+        {
+            ParticleS pp = pw->getParent().lock();
+            if(pp != shared_from_this())
+            {
+                pw->_parent = shared_from_this();
+                _children.push_back(std::move(pw));
+            }
+            if(pp)
+            {
+                pp->_delChild(p);
+            }
+        }
+        else
+        {
+            throw Hcl::Exception("Null pointer");
+        }
     }
 
-    void AbstractParticle::_delChild(AbstractParticle* p)
+    void AbstractParticle::_delChild(ParticleW p)
     {
-        QList<AbstractParticle*>::iterator it;
+        ParticleS ps = p.lock();
+        QList<ParticleS>::iterator it;
         for(it = _children.begin(); it != _children.end(); ++it)
         {
-            if(p == *it)
+            if(ps == *it)
             {
                 _children.erase(it);
                 break;
             }
         }
+        throw Hcl::Exception(tr("Particle to delete not found!"));
     }
 
     // DEPRECATED
@@ -108,16 +132,16 @@ namespace Kilo
 
     void AbstractParticle::clearChildren()
     {
-        for(AbstractParticle* i : _children)
+        for(ParticleS i : _children)
         {
-            delete i;
+            i.reset();
         }
         _children.clear();
     }
 
     void AbstractParticle::clearTraectory()
     {
-        for(AbstractParticle* i : _children)
+        for(ParticleS i : _children)
         {
             i->clearTraectory();
         }
@@ -126,10 +150,14 @@ namespace Kilo
         _traectory.push_back(t);
     }
 
+    // DEPRECATED
     void AbstractParticle::draw()
     {
+        /*qDebug() << "Drawing particle: " << getName() << ' ' << "(children: " << _children.size() << ")";
         for(AbstractParticle* i : _children)
         {
+            qDebug() << "Drawing: " << i << "\n";
+            qDebug() << i->getName();
             i->draw();
         }
 
@@ -139,7 +167,12 @@ namespace Kilo
         if(core.isDrawingTraectories())
             _drawTraectory();
         if(core.isDrawingSpheres())
-            _drawSphere();
+            _drawSphere();*/
+    }
+
+    QVector<ParticleField*>& AbstractParticle::getFields()
+    {
+        return _fields;
     }
 
     void AbstractParticle::_fitTraectory()
@@ -155,10 +188,10 @@ namespace Kilo
         }
     }
 
-    long double               AbstractParticle::getCharge   () const {return 0;}
-    QList<AbstractParticle*>& AbstractParticle::getChildren () {return _children;}
-    Hcl::Coord                AbstractParticle::getCoord    () const {return _traectory.back();}
-    QString                   AbstractParticle::getName     () const
+    long double       AbstractParticle::getCharge   () const {return 0;}
+    QList<ParticleS>& AbstractParticle::getChildren () {return _children;}
+    Hcl::Coord        AbstractParticle::getCoord    () const {return _traectory.back();}
+    QString           AbstractParticle::getName     () const
     {
         QString name = metaObject()->className();
         int i, n = name.length();
@@ -167,48 +200,73 @@ namespace Kilo
                 break;
         return name.right(n - i - 1);
     }
-    AbstractParticle*        AbstractParticle::getParent   () const {return _parent;}
+    ParticleW                AbstractParticle::getParent   () const {return _parent;}
     Hcl::Speed               AbstractParticle::getSpeed    () const {return _speed;}
     const QList<Hcl::Coord>& AbstractParticle::getTraectory() const {return _traectory;}
 
-    void AbstractParticle::getData(QTextStream& str) const
+    void AbstractParticle::writeData(QTextStream& str) const
     {
+        for(ParticleField* i: _fields)
+        {
+            QString* tmp = i->getValue();
+            str << *tmp;
+            delete tmp;
+        }
         str << _children.size() << '\n';
-        for(AbstractParticle* i : _children)
+        for(ParticleS i: _children)
         {
             str << i->getName() << ' ';
-            i->getData(str);
+            i->writeData(str);
             str << '\n';
         }
     }
 
-    void AbstractParticle::setData(QTextStream& str)
+    void AbstractParticle::readData(QTextStream& str)
     {
         int i, n;
+        QString tmpread;
+        _traectory.clear();
+        _traectory.push_back(0);
         clearChildren();
         str >> n;
+
+        qDebug() << "Children: " << n;
+        for(ParticleField* i: _fields)
+        {
+            str >> tmpread;
+            i->setValue(tmpread);
+            qDebug() << "Field \"" + i->name + "\" set to " + tmpread;
+        }
         for(i = 0; i < n; ++i)
         {
-            QString name;
-            str >> name;
-            std::shared_ptr<AbstractParticle> c = Hcl::Factory<AbstractParticle>::getInstance().get(name);
-            c->setParent(this);
-            c->setData(str);
+            str >> tmpread;
+            qDebug() << "\nRequesting particle: " << tmpread;
+            std::shared_ptr<AbstractParticle> c = Hcl::Factory<AbstractParticle>::getInstance().get(tmpread);
+            qDebug() << "Address: " << c.get();
+            c->setParent(shared_from_this());
+            c->readData(str);
         }
+        str >> _traectory.front();
         updateGroup();
     }
 
-    void AbstractParticle::setParent(AbstractParticle* p)
+    void AbstractParticle::setParent(ParticleW p)
     {
-        if(_parent)
+        try
         {
-            _parent->_delChild(this);
+            ParticleS parent_new = p.lock();
+            ParticleS parent_old = _parent.lock();
+            _parent = parent_new;
+            if(parent_new)
+            {
+                parent_new->_addChild(shared_from_this());
+            }
+            if(parent_old)
+            {
+                parent_old->_delChild(shared_from_this());
+            }
         }
-        _parent = p;
-        if(p)
-        {
-            p->_addChild(this);
-        }
+        CATCH("AbstractParticle::setParent");
     }
 
     void AbstractParticle::smartClean()

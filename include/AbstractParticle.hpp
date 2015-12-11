@@ -22,10 +22,13 @@
 #include <QTextStream>
 #include <QObject>
 #include <QString>
+#include <QVector>
 
 namespace Kilo
 {
     class AbstractParticle;
+    typedef std::shared_ptr<AbstractParticle> ParticleS;
+    typedef std::  weak_ptr<AbstractParticle> ParticleW;
 }
 
 // Kilo
@@ -33,7 +36,7 @@ namespace Kilo
 
 namespace Kilo
 {
-    class AbstractParticle : public QObject
+    class AbstractParticle : public QObject, public std::enable_shared_from_this<AbstractParticle>
     {
         Q_OBJECT
 
@@ -41,15 +44,16 @@ namespace Kilo
             int _sc_index;
 
         protected:
-            QList<AbstractParticle*> _children;
-            Hcl::Traectory           _traectory;
-            Hcl::Force               _force;
-            AbstractParticle*        _parent;
-            Hcl::Speed               _speed;
+            QList<ParticleS>        _children;
+            QVector<ParticleField*> _fields;
+            Hcl::Traectory          _traectory;
+            Hcl::Force              _force;
+            ParticleW               _parent;
+            Hcl::Speed              _speed;
 
             void _fitTraectory();
-            void _addChild(AbstractParticle*);
-            void _delChild(AbstractParticle*);
+            void _addChild(ParticleW);
+            void _delChild(ParticleW);
 
             void _drawDot      (); // Deprecated
             void _drawTraectory(); // Deprecated
@@ -62,23 +66,24 @@ namespace Kilo
             void clearChildren();
             void clearTraectory();
 
-            virtual void draw();
+            void draw();
 
-            virtual QColor                         getColor    () const = 0;
-            virtual long double                    getCharge   () const;
-            QList<AbstractParticle*>&              getChildren ();
-            Hcl::Coord                             getCoord    () const;
-            virtual const QVector<ParticleField*>& getFields   () = 0;
-            virtual long double                    getMass     () const = 0;
-            QString                                getName     () const;
-            AbstractParticle*                      getParent   () const;
-            virtual long double                    getRadius   () const = 0;
-            virtual Hcl::Speed                     getSpeed    () const;
-            const QList<Hcl::Coord>&               getTraectory() const;
+            virtual QColor           getColor    () const = 0;
+            virtual long double      getCharge   () const;
+            QList<ParticleS>&        getChildren ();
+            Hcl::Coord               getCoord    () const;
+            QVector<ParticleField*>& getFields   ();
+            virtual long double      getMass     () const = 0;
+            QString                  getName     () const;
+            ParticleW                getParent   () const;
+            virtual long double      getRadius   () const = 0;
+            virtual Hcl::Speed       getSpeed    () const;
+            const QList<Hcl::Coord>& getTraectory() const;
 
-            virtual void getData(QTextStream&) const;
-            virtual void setData(QTextStream&);
-            void setParent(AbstractParticle*);
+            void  readData(QTextStream&);
+            void writeData(QTextStream&) const;
+
+            void setParent(ParticleW);
 
             virtual void updateCoord() = 0;
             virtual void updateForce() = 0;

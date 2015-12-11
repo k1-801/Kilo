@@ -15,7 +15,6 @@
 #include <QColor>
 #include <QTextStream>
 #include <QObject>
-#include <QtXml>
 
 namespace Kilo
 {
@@ -44,11 +43,10 @@ namespace Kilo
 
             void add(AbstractParticle*);
 
-            QVector<ParticleField*>& getFields()       override;
-            long double              getCharge() const override;
-            QColor                   getColor () const override;
-            long double              getMass  () const override;
-            long double              getRadius() const override;
+            long double getCharge() const override;
+            QColor      getColor () const override;
+            long double getMass  () const override;
+            long double getRadius() const override;
 
             void updateCoord() override;
             void updateForce() override;

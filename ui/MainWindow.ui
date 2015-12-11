@@ -85,8 +85,7 @@
         </property>
         <property name="icon">
          <iconset theme="document-open">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -115,8 +114,7 @@
         </property>
         <property name="icon">
          <iconset theme="document-save">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -145,8 +143,7 @@
         </property>
         <property name="icon">
          <iconset theme="document-save-as">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -175,8 +172,7 @@
         </property>
         <property name="icon">
          <iconset theme="view-refresh">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -215,8 +211,7 @@
         </property>
         <property name="icon">
          <iconset theme="media-playback-start">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -248,38 +243,7 @@
         </property>
         <property name="icon">
          <iconset theme="media-playback-stop">
-          <normaloff/>
-         </iconset>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButtonClear">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>32</width>
-          <height>32</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>32</width>
-          <height>32</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset theme="edit-clear">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -308,8 +272,36 @@
         </property>
         <property name="icon">
          <iconset theme="window-new">
-          <normaloff/>
-         </iconset>
+          <normaloff>.</normaloff>.</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonClear">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset theme="edit-clear">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </widget>
       </item>
@@ -528,7 +520,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>19</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuKilo">
@@ -539,17 +531,10 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
-    <addaction name="actionReload_2"/>
+    <addaction name="actionReload"/>
+    <addaction name="actionClear"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuModel">
-    <property name="title">
-     <string>&amp;Model</string>
-    </property>
-    <addaction name="actionAddParticle"/>
-    <addaction name="separator"/>
-    <addaction name="actionParticle_list"/>
    </widget>
    <widget class="QMenu" name="menuSimulation">
     <property name="title">
@@ -557,18 +542,14 @@
     </property>
     <addaction name="actionRun"/>
     <addaction name="actionStop"/>
-    <addaction name="separator"/>
-    <addaction name="actionReload"/>
    </widget>
    <addaction name="menuKilo"/>
-   <addaction name="menuModel"/>
    <addaction name="menuSimulation"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
     <iconset theme="document-open">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Open</string>
@@ -577,8 +558,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset theme="document-save">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -587,8 +567,7 @@
   <action name="actionSaveAs">
    <property name="icon">
     <iconset theme="document-save-as">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save &amp;as</string>
@@ -597,23 +576,16 @@
   <action name="actionExit">
    <property name="icon">
     <iconset theme="application-exit">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="actionSave_al">
-   <property name="text">
-    <string>Sa&amp;ve all</string>
-   </property>
-  </action>
   <action name="actionRun">
    <property name="icon">
     <iconset theme="media-playback-start">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Run</string>
@@ -625,8 +597,7 @@
    </property>
    <property name="icon">
     <iconset theme="media-playback-stop">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Stop</string>
@@ -635,66 +606,27 @@
   <action name="actionParticle_list">
    <property name="icon">
     <iconset theme="window-new">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Particle &amp;list</string>
    </property>
   </action>
-  <action name="actionAbout">
-   <property name="text">
-    <string>About &amp;Kilo</string>
-   </property>
-  </action>
-  <action name="actionAddParticle">
-   <property name="icon">
-    <iconset theme="list-add">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>&amp;AddParticle</string>
-   </property>
-  </action>
-  <action name="actionExport_traectories">
-   <property name="text">
-    <string>&amp;Export traectories</string>
-   </property>
-  </action>
-  <action name="actionAboutQt">
-   <property name="text">
-    <string>About &amp;Qt</string>
-   </property>
-  </action>
-  <action name="actionHelp">
-   <property name="text">
-    <string>&amp;Help</string>
-   </property>
-  </action>
-  <action name="actionAuthors_and_support">
-   <property name="text">
-    <string>&amp;Authors and support</string>
-   </property>
-  </action>
   <action name="actionReload">
    <property name="icon">
     <iconset theme="view-refresh">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>R&amp;eload</string>
-   </property>
-  </action>
-  <action name="actionReload_2">
-   <property name="icon">
-    <iconset theme="view-refresh">
-     <normaloff/>
-    </iconset>
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Reload</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset theme="edit-clear"/>
+   </property>
+   <property name="text">
+    <string>&amp;Clear</string>
    </property>
   </action>
  </widget>

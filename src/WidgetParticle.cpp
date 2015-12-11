@@ -8,6 +8,9 @@
  * @author k1-801
  */
 
+// HCL
+#include <HCL/Exception.hpp>
+
 namespace Kilo
 {
     WidgetParticle::WidgetParticle(QWidget* parent) : QTableWidget(parent)
@@ -21,11 +24,19 @@ namespace Kilo
         ;
     }
 
-    void WidgetParticle::setParticle(AbstractParticle* p)
+    void WidgetParticle::setParticle(ParticleW p)
     {
-        _p = p;
-        this->setHorizontalHeaderLabels(QStringList(p->getName()));
-        _update();
+        ParticleS p2 = p.lock();
+        if(p2)
+        {
+            _p = p2;
+            this->setHorizontalHeaderLabels(QStringList(p2->getName()));
+            _update();
+        }
+        else
+        {
+            throw Hcl::Exception("WidgetParticle::setParticle(): Null pointer");
+        }
     }
 }
 

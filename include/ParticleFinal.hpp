@@ -32,9 +32,6 @@ namespace Kilo
             ParticleFinal();
             virtual ~ParticleFinal() override;
 
-            void getData(QTextStream&) const override;
-            void setData(QTextStream&) override;
-
             void updateCoord() override;
             void updateForce() override;
             bool updateGroup() override;

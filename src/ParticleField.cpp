@@ -59,4 +59,21 @@ namespace Kilo
             str >> *_src;
         }
     }
+
+// QColor
+    ParticleFieldQColor::ParticleFieldQColor(QString _name, bool m, QColor& src) : ParticleField(_name, m)
+    {
+        _src = &src;
+    }
+
+    QString* ParticleFieldQColor::getValue()
+    {
+        QString* result = new QString(_src->name());
+        return result;
+    }
+
+    void ParticleFieldQColor::setValue(QString value)
+    {
+        _src->setNamedColor(value);
+    }
 }

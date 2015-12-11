@@ -17,21 +17,6 @@ namespace Kilo
     ParticleFinal::ParticleFinal() : AbstractParticle(){}
     ParticleFinal::~ParticleFinal(){}
 
-    void ParticleFinal::getData(QTextStream& str) const
-    {
-        AbstractParticle::getData(str);
-        str << _traectory.back() << ' ' << _force << ' ' << _speed;
-    }
-
-    void ParticleFinal::setData(QTextStream& str)
-    {
-        AbstractParticle::setData(str);
-        Hcl::Coord c;
-        str >> c >> _force >> _speed;
-        _traectory.clear();
-        _traectory.push_back(c);
-    }
-
     void ParticleFinal::updateCoord()
     {
         _fitTraectory();
@@ -44,15 +29,15 @@ namespace Kilo
 
     void ParticleFinal::updateForce()
     {
-        AbstractParticle* p;
-        AbstractParticle* prev = this;
+        ParticleS p;
+        ParticleS prev = shared_from_this();
         long double m0 = getMass(), m1;
         long double q0 = getCharge(), q1;
 
         _force = 0;
-        for(p = _parent; p != NULL; p = p->getParent())
+        for(p = _parent.lock(); p; p = p->getParent().lock())
         {
-            for(AbstractParticle* c : p->getChildren())
+            for(std::shared_ptr<AbstractParticle> c : p->getChildren())
             {
                 if(c != prev)
                 {

@@ -14,6 +14,7 @@
 // C++
 #include <memory>
 // Qt
+#include <QColor>
 #include <QString>
 // HCL
 #include <HCL/Vector3.hpp>
@@ -23,6 +24,7 @@ namespace Kilo
     class ParticleField;
     class ParticleFieldLongDouble;
     class ParticleFieldVector3;
+    class ParticleFieldQColor;
 }
 
 namespace Kilo
@@ -46,8 +48,8 @@ namespace Kilo
 
         public:
             ParticleFieldLongDouble(QString, bool, long double&);
-            QString* getValue();
-            void     setValue(QString);
+            QString* getValue()        override;
+            void     setValue(QString) override;
     };
 
     class ParticleFieldVector3 : public ParticleField
@@ -57,8 +59,19 @@ namespace Kilo
 
         public:
             ParticleFieldVector3(QString, bool, Hcl::Vector3&);
-            QString* getValue();
-            void     setValue(QString);
+            QString* getValue()        override;
+            void     setValue(QString) override;
+    };
+
+    class ParticleFieldQColor : public ParticleField
+    {
+        protected:
+            QColor* _src;
+
+        public:
+            ParticleFieldQColor(QString, bool, QColor&);
+            QString* getValue()        override;
+            void     setValue(QString) override;
     };
 }
 
