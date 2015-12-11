@@ -29,8 +29,8 @@ namespace Kilo
 
     void ParticleFinal::updateForce()
     {
-        ParticleS p;
-        ParticleS prev = shared_from_this();
+        ParticleSP p;
+        ParticleSP prev = shared_from_this();
         long double m0 = getMass(), m1;
         long double q0 = getCharge(), q1;
 

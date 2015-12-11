@@ -32,7 +32,7 @@ namespace Kilo
         Q_OBJECT
 
         private:
-            QColor  _color;
+            QColor      _color;
             long double _mass;
             long double _radius;
             long double _charge;

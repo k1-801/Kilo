@@ -27,8 +27,8 @@
 namespace Kilo
 {
     class AbstractParticle;
-    typedef std::shared_ptr<AbstractParticle> ParticleS;
-    typedef std::  weak_ptr<AbstractParticle> ParticleW;
+    typedef std::shared_ptr<AbstractParticle> ParticleSP;
+    typedef std::  weak_ptr<AbstractParticle> ParticleWP;
 }
 
 // Kilo
@@ -44,16 +44,16 @@ namespace Kilo
             int _sc_index;
 
         protected:
-            QList<ParticleS>        _children;
+            QList<ParticleSP>       _children;
             QVector<ParticleField*> _fields;
             Hcl::Traectory          _traectory;
             Hcl::Force              _force;
-            ParticleW               _parent;
+            ParticleWP              _parent;
             Hcl::Speed              _speed;
 
             void _fitTraectory();
-            void _addChild(ParticleW);
-            void _delChild(ParticleW);
+            void _addChild(ParticleWP);
+            void _delChild(ParticleWP);
 
             void _drawDot      (); // Deprecated
             void _drawTraectory(); // Deprecated
@@ -70,12 +70,12 @@ namespace Kilo
 
             virtual QColor           getColor    () const = 0;
             virtual long double      getCharge   () const;
-            QList<ParticleS>&        getChildren ();
+            QList<ParticleSP>&       getChildren ();
             Hcl::Coord               getCoord    () const;
             QVector<ParticleField*>& getFields   ();
             virtual long double      getMass     () const = 0;
             QString                  getName     () const;
-            ParticleW                getParent   () const;
+            ParticleWP               getParent   () const;
             virtual long double      getRadius   () const = 0;
             virtual Hcl::Speed       getSpeed    () const;
             const QList<Hcl::Coord>& getTraectory() const;
@@ -83,12 +83,14 @@ namespace Kilo
             void  readData(QTextStream&);
             void writeData(QTextStream&) const;
 
-            void setParent(ParticleW);
+            void setParent(ParticleWP);
 
             virtual void updateCoord() = 0;
             virtual void updateForce() = 0;
             virtual bool updateGroup() = 0;
             virtual void  smartClean();
+
+            ParticleSP self();
     };
 }
 

@@ -24,9 +24,9 @@ namespace Kilo
         ;
     }
 
-    void WidgetParticle::setParticle(ParticleW p)
+    void WidgetParticle::setParticle(ParticleWP p)
     {
-        ParticleS p2 = p.lock();
+        ParticleSP p2 = p.lock();
         if(p2)
         {
             _p = p2;

@@ -24,13 +24,14 @@ namespace Kilo
 
     Universe& Universe::getInstance()
     {
-        static Universe _instance;
-        return _instance;
+//        static Universe _instance;
+        static std::shared_ptr<Universe> _instance = std::make_shared<Universe>();
+        return *_instance;
     }
 
     bool Universe::updateGroup()
     {
-        for(ParticleS i : _children)
+        for(ParticleSP i : _children)
         {
             i->updateGroup();
         }

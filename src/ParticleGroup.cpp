@@ -39,7 +39,7 @@ namespace Kilo
 
     void ParticleGroup::updateForce()
     {
-        for(ParticleS i : _children)
+        for(ParticleSP i : _children)
         {
             i->updateForce();
         }
@@ -47,7 +47,7 @@ namespace Kilo
 
     bool ParticleGroup::updateGroup()
     {
-        ParticleS p = _parent.lock();
+        ParticleSP p = _parent.lock();
         if(!p)
         {
             Core::getInstance().error("ParticleGroup without a parent!");
@@ -56,7 +56,7 @@ namespace Kilo
         bool b = false;
 
         // Update children
-        for(ParticleS c : _children)
+        for(ParticleSP c : _children)
         {
             c->updateGroup();
         }
@@ -65,7 +65,7 @@ namespace Kilo
         long double r;
 
         // Check siblings for possible merging
-        for(ParticleS c : p->getChildren())
+        for(ParticleSP c : p->getChildren())
         {
             if((c->getCoord() - getCoord()).length() < _radius)
             {
@@ -82,7 +82,7 @@ namespace Kilo
         _radius = 0;
 
         uint64_t sr = 0, sg = 0, sb = 0;
-        for(ParticleS c : _children)
+        for(ParticleSP c : _children)
         {
             _charge       += c->getCharge();
             _traectory.back() += c->getCoord() * c->getMass();
@@ -94,7 +94,7 @@ namespace Kilo
         _color.setRgb(sr / _children.size(), sg / _children.size(), sb / _children.size());
         _traectory.back() /= _children.size() * _mass;
 
-        for(ParticleS c : _children)
+        for(ParticleSP c : _children)
         {
             r = (c->getCoord() - _traectory.back()).length() + c->getRadius();
             if( _radius < r)
@@ -106,7 +106,7 @@ namespace Kilo
     void ParticleGroup::smartClean()
     {
         AbstractParticle::smartClean();
-        for(ParticleS i : _children)
+        for(ParticleSP i : _children)
         {
             i->smartClean();
         }

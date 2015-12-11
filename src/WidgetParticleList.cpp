@@ -18,13 +18,13 @@ namespace Kilo
         reload();
     }
 
-    void WidgetParticleList::_load(QTreeWidgetItem* parent, ParticleW curr, int level)
+    void WidgetParticleList::_load(QTreeWidgetItem* parent, ParticleWP curr, int level)
     {
-        ParticleS c = curr.lock();
+        ParticleSP c = curr.lock();
         QTreeWidgetItem* item = new QTreeWidgetItem(QStringList(c->getName()));
         parent->addChild(item);
         _c[item] = std::make_pair(c, level);
-        for(ParticleS i : c->getChildren())
+        for(ParticleSP i : c->getChildren())
         {
             _load(item, i, level + 1);
         }
@@ -35,9 +35,9 @@ namespace Kilo
         Universe& u = Universe::getInstance();
         _c.clear();
         QTreeWidgetItem* uitem = new QTreeWidgetItem(QStringList("Universe"));
-        QList<ParticleS>& list = u.getChildren();
-        _c[uitem] = std::make_pair(u.shared_from_this(), 0);
-        for(ParticleS i : list)
+        QList<ParticleSP>& list = u.getChildren();
+        _c[uitem] = std::make_pair(u.self(), 0);
+        for(ParticleSP i : list)
         {
             _load(uitem, i, 1);
         }
