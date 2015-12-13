@@ -84,6 +84,7 @@ namespace Kilo
             void run();
             void stop();
             void clear();
+            void changeZoom(long double);
     };
 }
 

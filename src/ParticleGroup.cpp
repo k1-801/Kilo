@@ -43,6 +43,7 @@ namespace Kilo
         {
             i->updateForce();
         }
+        _force = 0;
     }
 
     bool ParticleGroup::updateGroup()

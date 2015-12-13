@@ -42,13 +42,15 @@ namespace Kilo
 
         Core  * c = &Core::getInstance();
         Runner* r = &Runner::getInstance();
-        connect(this, &MainWindow::destroyed, r,    &Runner    ::stop);
-        connect(this, &MainWindow::run,       r,    &Runner    ::simRun);
-        connect(this, &MainWindow::stop,      r,    &Runner    ::simStop);
-        connect(this, &MainWindow::open,      c,    &Core      ::open);
-        connect(this, &MainWindow::save,      c,    &Core      ::save);
-        connect(this, &MainWindow::clear,     c,    &Core      ::clear);
-        connect(r,    &Runner::stateChanged,  this, &MainWindow::on_runnerStateChanged);
+        WidgetModel* m = ui->widgetModel;
+        connect(this, &MainWindow::destroyed,    r,    &Runner     ::stop);
+        connect(this, &MainWindow::run,          r,    &Runner     ::simRun);
+        connect(this, &MainWindow::stop,         r,    &Runner     ::simStop);
+        connect(this, &MainWindow::open,         c,    &Core       ::open);
+        connect(this, &MainWindow::save,         c,    &Core       ::save);
+        connect(this, &MainWindow::clear,        c,    &Core       ::clear);
+        connect(this, &MainWindow::changeZoom,   m,    &WidgetModel::changeZoom);
+        connect(r,    &Runner    ::stateChanged, this, &MainWindow ::on_runnerStateChanged);
     }
 
     MainWindow::~MainWindow()
@@ -169,5 +171,6 @@ namespace Kilo
                     ui->checkBoxSmartclean ->isChecked(),
                     ui->checkBoxSpheres    ->isChecked(),
                     ui->checkBoxTraectories->isChecked());
+        emit changeZoom(Core::getInstance().getZoom());
     }
 }

@@ -7,6 +7,7 @@ QMAKE_CXXFLAGS += -std=c++14 -Wall
 
 TARGET = Kilo
 TEMPLATE = app
+VERSION = 0.4.2
 
 TRANSLATIONS += \
     qrc/lang/Kilo_en.ts \

@@ -26,18 +26,20 @@ namespace Kilo
     {
         protected:
             Hcl::Rotation _rotation; // Rotation angle
-            Hcl::Coord _offset;
+            Hcl::Coord    _offset;
+            long double   _zoom;
             void paintGL();
 
         public:
             WidgetModel(QWidget* = 0);
             ~WidgetModel();
-            void drawSphere   (QColor, Hcl::Coord    );
+            void drawSphere   (QColor, Hcl::Coord    , long double);
             void drawPoint    (QColor, Hcl::Coord    );
             void drawTraectory(QColor, Hcl::Traectory);
 
         public slots:
             void changeAngle(Hcl::Rotation);
+            void changeZoom(long double);
     };
 }
 

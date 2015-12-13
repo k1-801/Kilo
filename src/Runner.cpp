@@ -10,6 +10,8 @@
 
 // Qt
 #include <QCoreApplication>
+// HCL
+#include <HCL/Locker2.hpp>
 // Kilo
 #include "../include/Core.hpp"
 #include "../include/Universe.hpp"
@@ -43,14 +45,13 @@ namespace Kilo
                 while(_b)
                 {
                     QCoreApplication::processEvents();
-                    core.mutexParticles.lock();
-                    u.updateForce();
+                    QObject().thread()->usleep(10);
+                    Hcl::Locker1 _(core.mutexParticles);
+                    /*u.updateForce();
                     u.updateCoord();
                     u.updateGroup();
-                    u.smartClean();
-                    core.mutexParticles.unlock();
+                    u.smartClean();*/
                 }
-                QObject().thread()->usleep(10);
             }
         }
     }

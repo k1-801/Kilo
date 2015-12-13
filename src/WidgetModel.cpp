@@ -9,6 +9,7 @@
  */
 
 // HCL
+#include <HCL/Locker2.hpp>
 #include <HCL/Vector3.hpp>
 // Kilo
 #include "../include/Core.hpp"
@@ -19,7 +20,10 @@
 
 namespace Kilo
 {
-    WidgetModel::WidgetModel(QWidget* parent) : Widget3D(parent){}
+    WidgetModel::WidgetModel(QWidget* parent) : Widget3D(parent)
+    {
+        _zoom = 1;
+    }
     WidgetModel::~WidgetModel(){}
 
     void WidgetModel::paintGL()
@@ -54,15 +58,36 @@ namespace Kilo
         }
         glEnd();
 
-        QMutex& m = Core::getInstance().mutexParticles;
-        m.lock();
+        //Hcl::Locker1 _(Core::getInstance().mutexParticles);
         Universe::getInstance().draw();
-        m.unlock();
     }
 
     void WidgetModel::changeAngle(Hcl::Rotation r)
     {
         _rotation = r;
         paintGL();
+    }
+
+    void WidgetModel::drawSphere(QColor color, Hcl::Coord coord, long double radius)
+    {
+        long double alpha = 1.5 - radius * _zoom;
+        if(alpha < 0)
+            alpha = 0;
+        if(alpha > 1)
+            alpha = 1;
+
+        glPushMatrix();
+        glTranslated(coord.getX() * _zoom, coord.getY() * _zoom, coord.getZ() * _zoom);
+        glColor4f(color.red(), color.green(), color.blue(), alpha);
+        GLUquadric* quad = gluNewQuadric();
+        gluQuadricDrawStyle(quad, GLU_FILL);
+        gluSphere(quad, radius * _zoom, 32, 32);
+        gluDeleteQuadric(quad);
+        glPopMatrix();
+    }
+
+    void WidgetModel::changeZoom(long double z)
+    {
+        _zoom = z;
     }
 }

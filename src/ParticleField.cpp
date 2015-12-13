@@ -8,6 +8,10 @@
  * @author k1-801
  */
 
+// HCL
+#include <HCL/Exception.hpp>
+#include <HCL/Locker2.hpp>
+
 namespace Kilo
 {
     ParticleField::ParticleField(QString _name, bool m)
@@ -46,18 +50,18 @@ namespace Kilo
 
     QString* ParticleFieldVector3::getValue()
     {
+        Hcl::Locker1 _(_src->_m);
         QTextStream str;
-        str << *_src;
+        str << _src->getX() << ';' << _src->getY() << ';' << _src->getZ();
         return str.string();
     }
 
     void ParticleFieldVector3::setValue(QString value)
     {
-        if(_m)
-        {
-            QTextStream str(&value);
-            str >> *_src;
-        }
+        QTextStream str(&value);
+        Hcl::Vector3 buf;
+        str >> buf;
+        *_src = buf;
     }
 
 // QColor

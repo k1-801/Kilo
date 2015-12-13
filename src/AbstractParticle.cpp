@@ -41,41 +41,44 @@ namespace Kilo
 
     void AbstractParticle::_addChild(ParticleWP p)
     {
-        try
+        ParticleSP pw = p.lock();
+        if(pw)
         {
-            ParticleSP pw = p.lock();
-            if(pw)
+            ParticleSP pp = pw->getParent().lock();
+            if(pp != self())
             {
-                ParticleSP pp = pw->getParent().lock();
-                if(pp != self())
-                {
-                    pw->_parent = self();
-                    _children.push_back(std::move(pw));
-                }
+                pw->_parent = self();
+                _children.push_back(pw);
                 if(pp)
                 {
                     pp->_delChild(p);
                 }
             }
-            else
-            {
-                throw Hcl::Exception("Null pointer");
-            }
         }
-        CATCH("AbstractParticle::_addChild");
+        else
+        {
+            throw Hcl::Exception("Null pointer");
+        }
     }
 
     void AbstractParticle::_delChild(ParticleWP p)
     {
         ParticleSP ps = p.lock();
-        QList<ParticleSP>::iterator it;
-        for(it = _children.begin(); it != _children.end(); ++it)
+        if(ps)
         {
-            if(ps == *it)
+            QList<ParticleSP>::iterator it;
+            for(it = _children.begin(); it != _children.end(); ++it)
             {
-                _children.erase(it);
-                break;
+                if(ps == *it)
+                {
+                    _children.erase(it);
+                    break;
+                }
             }
+        }
+        else
+        {
+            throw Hcl::Exception("Null pointer");
         }
     }
 
@@ -112,27 +115,6 @@ namespace Kilo
         glEnd();
     }
 
-    // DAPRECATED
-    void AbstractParticle::_drawSphere()
-    {
-        QColor color = getColor();
-        long double k3 = Core::getInstance().getZoom();
-        long double alpha = 1.5 - getRadius() * k3;
-        if(alpha < 0)
-            alpha = 0;
-        if(alpha > 1)
-            alpha = 1;
-
-        glPushMatrix();
-        glTranslated(_traectory.back().getX() * k3, _traectory.back().getY() * k3, _traectory.back().getZ() * k3);
-        glColor4f(color.red(), color.green(), color.blue(), alpha);
-        GLUquadric* quad = gluNewQuadric();
-        gluQuadricDrawStyle(quad, GLU_FILL);
-        gluSphere(quad, getRadius() * k3, 32, 32);
-        gluDeleteQuadric(quad);
-        glPopMatrix();
-    }
-
     void AbstractParticle::clearChildren()
     {
         for(ParticleSP i : _children)
@@ -156,6 +138,7 @@ namespace Kilo
     // DEPRECATED
     void AbstractParticle::draw()
     {
+        //qDebug() << "Drawing " << getName() << " with " << _children.size() << " children";
         for(ParticleSP i : _children)
         {
             i->draw();
@@ -166,8 +149,6 @@ namespace Kilo
         _drawDot();
         if(core.isDrawingTraectories())
             _drawTraectory();
-        if(core.isDrawingSpheres())
-            _drawSphere();
     }
 
     QVector<ParticleField*>& AbstractParticle::getFields()
@@ -232,28 +213,21 @@ namespace Kilo
             clearChildren();
             str >> n;
 
-            qDebug() << getName();
-            qDebug() << "Children: " << n;
             for(ParticleField* i: _fields)
             {
                 str >> tmpread;
                 i->setValue(tmpread);
-                qDebug() << "Field \"" + i->name + "\" set to " + tmpread;
             }
             for(i = 0; i < n; ++i)
             {
                 str >> tmpread;
-                qDebug() << "\nRequesting particle: " << tmpread;
                 ParticleSP c = Hcl::Factory<AbstractParticle>::getInstance().get(tmpread);
-                qDebug() << "Address: " << c.get();
-                self();
-                qDebug() << "Getting shared_from_this() is possible";
                 c->setParent(self());
-                qDebug() << "Parenthness set";
                 c->readData(str);
             }
             str >> _traectory.front();
             updateGroup();
+            qDebug() << "Final children of " << getName() << " : " << _children.size();
         }
         CATCH("AbstractParticle::readData");
     }
@@ -264,15 +238,19 @@ namespace Kilo
         {
             ParticleSP parent_new = p.lock();
             ParticleSP parent_old = _parent.lock();
+
+            if(parent_new != parent_old)
+            {
+                if(parent_new)
+                {
+                    parent_new->_addChild(self());
+                }
+                if(parent_old)
+                {
+                    parent_old->_delChild(self());
+                }
+            }
             _parent = parent_new;
-            if(parent_new)
-            {
-                parent_new->_addChild(self());
-            }
-            if(parent_old)
-            {
-                parent_old->_delChild(self());
-            }
         }
         CATCH("AbstractParticle::setParent");
     }

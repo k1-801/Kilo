@@ -59,7 +59,7 @@ namespace Kilo
             Hcl::Rotation rotation;
 
             QMutex mutexParams;
-            QMutex mutexParticles;
+            std::mutex mutexParticles;
 
             static Core& getInstance();
             QString getPath();
