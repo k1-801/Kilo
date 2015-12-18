@@ -82,6 +82,10 @@ namespace Kilo
         public slots:
             void open(QString);
             void save(QString);
+            void quit();
+
+        signals:
+            void stop();
     };
 }
 

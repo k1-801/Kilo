@@ -23,6 +23,8 @@
 #include <QObject>
 #include <QString>
 #include <QVector>
+// HCL
+#include <HCL/Vector3.hpp>
 
 namespace Kilo
 {

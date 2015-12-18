@@ -8,6 +8,8 @@
  * @author k1-801
  */
 
+// Qt
+#include <QDebug>
 // HCL
 #include <HCL/Exception.hpp>
 #include <HCL/Locker2.hpp>
@@ -28,9 +30,11 @@ namespace Kilo
 
     QString* ParticleFieldLongDouble::getValue()
     {
-        QTextStream str;
+        QString* result = new QString;
+        QTextStream str(result);
+        str.setRealNumberNotation(QTextStream::FixedNotation);
         str << *_src;
-        return str.string();
+        return result;
     }
 
     void ParticleFieldLongDouble::setValue(QString value)
@@ -50,18 +54,16 @@ namespace Kilo
 
     QString* ParticleFieldVector3::getValue()
     {
-        Hcl::Locker1 _(_src->_m);
-        QTextStream str;
-        str << _src->getX() << ';' << _src->getY() << ';' << _src->getZ();
-        return str.string();
+        QString* result = new QString;
+        QTextStream str(result);
+        str.setRealNumberNotation(QTextStream::FixedNotation);
+        str << *_src;
+        return result;
     }
 
     void ParticleFieldVector3::setValue(QString value)
     {
-        QTextStream str(&value);
-        Hcl::Vector3 buf;
-        str >> buf;
-        *_src = buf;
+        _src->setValue(value);
     }
 
 // QColor

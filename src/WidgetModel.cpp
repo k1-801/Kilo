@@ -7,7 +7,8 @@
  * @project Kilo
  * @author k1-801
  */
-
+// Qt
+#include <QQueue>
 // HCL
 #include <HCL/Locker2.hpp>
 #include <HCL/Vector3.hpp>
@@ -57,6 +58,8 @@ namespace Kilo
             }
         }
         glEnd();
+
+        QQueue<ParticleSP> q();
 
         //Hcl::Locker1 _(Core::getInstance().mutexParticles);
         Universe::getInstance().draw();

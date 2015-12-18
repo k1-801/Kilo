@@ -14,9 +14,11 @@ TRANSLATIONS += \
     qrc/lang/Kilo_ru.ts
 
 SOURCES += \
+    src/AbstractParticle.cpp \
     src/Core.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
+    src/ParticleField.cpp \
     src/ParticleFinal.cpp \
     src/ParticleGroup.cpp \
     src/Particles/Dot.cpp \
@@ -27,14 +29,15 @@ SOURCES += \
     src/WidgetModel.cpp \
     src/DialogParticleList.cpp \
     src/WidgetParticle.cpp \
-    src/WidgetParticleList.cpp \
-    src/ParticleField.cpp \
-    src/AbstractParticle.cpp
+    src/WidgetParticleList.cpp
+
 
 HEADERS += \
+    include/AbstractParticle.hpp \
     include/MainWindow.hpp \
     include/Core.hpp \
     include/Runner.hpp \
+    include/ParticleField.hpp \
     include/ParticleFinal.hpp \
     include/ParticleGroup.hpp \
     include/Particles/Dot.hpp \
@@ -45,9 +48,7 @@ HEADERS += \
     include/WidgetModel.hpp \
     include/DialogParticleList.hpp \
     include/WidgetParticle.hpp \
-    include/WidgetParticleList.hpp \
-    include/ParticleField.hpp \
-    include/AbstractParticle.hpp
+    include/WidgetParticleList.hpp
 
 FORMS += \
         ui/DialogParticleList.ui \

@@ -26,9 +26,6 @@ namespace Kilo
     void DialogParticleList::_update()
     {
         ui->particleList->clear();
-//        QTreeWidgetItem* it = new QTreeWidgetItem;
-//        it->setData();
-//        ui->particleList->addTopLevelItem();
         Universe::getInstance();
     }
 
@@ -43,4 +40,15 @@ namespace Kilo
     {
         ui->particle->setParticle(ui->particleList->_c[item].first);
     }
+
+    void DialogParticleList::on_particle_cellChanged(int row, int)
+    {
+        ui->particle->change(row);
+    }
+
+    void DialogParticleList::on_pushButtonClose_clicked()
+    {
+        close();
+    }
 }
+

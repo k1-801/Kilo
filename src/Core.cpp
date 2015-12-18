@@ -56,8 +56,9 @@ namespace Kilo
 
             Runner  * r = &Runner  ::getInstance();
             r->moveToThread(&_runner);
-            connect(&_runner, &QThread::started,      r,    &Runner    ::start);
-            connect(&_runner, &QThread::finished,     r,    &QObject   ::deleteLater);
+            connect(&_runner, &QThread::started,  r, &Runner    ::start);
+            connect(&_runner, &QThread::finished, r, &QObject   ::deleteLater);
+            connect(this,     &Core   ::stop,     r, &Runner    ::stop);
             _runner.start();
         }
         CATCH("Core::run");
@@ -164,5 +165,10 @@ namespace Kilo
         _traectories = tr;
         _precision = pow(1.1, _p_orig);
         _zoom      = pow(1.1, _z_orig);
+    }
+
+    void Core::quit()
+    {
+        emit stop();
     }
 }

@@ -47,10 +47,10 @@ namespace Kilo
                     QCoreApplication::processEvents();
                     QObject().thread()->usleep(10);
                     Hcl::Locker1 _(core.mutexParticles);
-                    /*u.updateForce();
+                    u.updateForce();
                     u.updateCoord();
                     u.updateGroup();
-                    u.smartClean();*/
+                    u.smartClean();
                 }
             }
         }

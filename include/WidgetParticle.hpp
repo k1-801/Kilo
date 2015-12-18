@@ -31,11 +31,11 @@ namespace Kilo
         protected:
             ParticleWP _p;
 
-            void _update();
-
         public:
             WidgetParticle(QWidget* = 0);
             void setParticle(ParticleWP);
+            void update();
+            void change(int);
     };
 }
 

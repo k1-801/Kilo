@@ -13,7 +13,6 @@
 // C++
 #include <memory>
 // Qt
-#include <QDebug>
 #include <QOpenGLWidget>
 // GL
 #include <GL/glu.h>
@@ -172,15 +171,7 @@ namespace Kilo
     long double        AbstractParticle::getCharge   () const {return 0;}
     QList<ParticleSP>& AbstractParticle::getChildren () {return _children;}
     Hcl::Coord         AbstractParticle::getCoord    () const {return _traectory.back();}
-    QString            AbstractParticle::getName     () const
-    {
-        QString name = metaObject()->className();
-        int i, n = name.length();
-        for(i = n - 1; i >= 0; --i)
-            if(name[i] == ':')
-                break;
-        return name.right(n - i - 1);
-    }
+    QString            AbstractParticle::getName     () const {return metaObject()->className();}
     ParticleWP               AbstractParticle::getParent   () const {return _parent;}
     Hcl::Speed               AbstractParticle::getSpeed    () const {return _speed;}
     const QList<Hcl::Coord>& AbstractParticle::getTraectory() const {return _traectory;}
@@ -225,9 +216,7 @@ namespace Kilo
                 c->setParent(self());
                 c->readData(str);
             }
-            str >> _traectory.front();
             updateGroup();
-            qDebug() << "Final children of " << getName() << " : " << _children.size();
         }
         CATCH("AbstractParticle::readData");
     }

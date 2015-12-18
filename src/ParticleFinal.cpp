@@ -8,6 +8,11 @@
  * @author k1-801
  */
 
+// Qt
+#include <QDebug>
+// HCL
+#include <HCL/Operators.hpp>
+#include <HCL/Vector3.hpp>
 // Kilo
 #include "../include/Phy.hpp"
 #include "../include/Core.hpp"
@@ -37,7 +42,7 @@ namespace Kilo
         _force = 0;
         for(p = _parent.lock(); p; p = p->getParent().lock())
         {
-            for(std::shared_ptr<AbstractParticle> c : p->getChildren())
+            for(ParticleSP c : p->getChildren())
             {
                 if(c != prev)
                 {

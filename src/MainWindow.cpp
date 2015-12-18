@@ -44,6 +44,7 @@ namespace Kilo
         Runner* r = &Runner::getInstance();
         WidgetModel* m = ui->widgetModel;
         connect(this, &MainWindow::destroyed,    r,    &Runner     ::stop);
+        connect(this, &MainWindow::destroyed,    c,    &Core       ::quit);
         connect(this, &MainWindow::run,          r,    &Runner     ::simRun);
         connect(this, &MainWindow::stop,         r,    &Runner     ::simStop);
         connect(this, &MainWindow::open,         c,    &Core       ::open);
