@@ -14,6 +14,7 @@
 #include <memory>
 // Qt
 #include <QOpenGLWidget>
+#include <QDebug>
 // GL
 #include <GL/glu.h>
 // HCL
@@ -100,17 +101,25 @@ namespace Kilo
     {
         QColor color = getColor();
         long double k3 = Core::getInstance().getZoom();
-        uint64_t i = 0;
+        long double k2 = 0, n = _traectory.size() * 4;
+        //qDebug() << "Traectory size is" << n;
+
         glBegin(GL_LINE_STRIP);
         {
             for(Hcl::Coord coord : _traectory)
             {
-                long double k1 = (long double)(i) / _traectory.size();
-                glColor3f (color.red() * k1, color.green() * k1, color.blue() * k1);
+                long double k1 = 0.25 + k2 / n;
+                //qDebug() << k1;
+                glColor3f (color.redF() * k1, color.greenF() * k1, color.blueF() * k1);
                 glVertex3d(coord.getX() * k3, coord.getY() * k3, coord.getZ() * k3);
-                ++i;
+                k2 += 3;
             }
         }
+
+        glEnd();
+        glBegin(GL_POINT);
+        glColor3f (1, 0, 0);
+        glVertex3d(_traectory.first().getX() * k3, _traectory.first().getY() * k3, _traectory.first().getZ() * k3);
         glEnd();
     }
 

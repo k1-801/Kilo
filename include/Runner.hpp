@@ -47,6 +47,8 @@ namespace Kilo
 
         signals:
             void stateChanged(bool);
+            void finished();
+            void error(QString);
     };
 }
 

@@ -1,0 +1,16 @@
+kmf.26 -104 -260 1 1 1 0 0
+2
+Kilo::Dot   0              0;0;0   0;0;0       0;0;0   0   #FFFF00   1989100000000000000000000000000 695510000
+Kilo::Dot   0   152098232000;0;0   0;0;0   0;29783;0   0   #00FF99         5973600000000000000000000   6371000
+
+Add Moon here: Dot   152384400000 0 0   0 0 0   0                               73500000000000000000000    
+
+Model: Solar system startup
+
+ParticleGroup structure:
+Sun
+Earth
+
+Tip:
+ParticleGroup size
+Dot coord force speed [charge] [color] [mass] [radius]  (values in [] are usually constant for each particle type, but needed by universal particle type Dot)

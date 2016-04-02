@@ -52,7 +52,8 @@ HEADERS += \
 
 FORMS += \
         ui/DialogParticleList.ui \
-        ui/MainWindow.ui
+        ui/MainWindow.ui \
+        ui/DialogAddParticle.ui
 
 RESOURCES += \
     qrc/resources.qrc

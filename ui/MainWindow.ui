@@ -84,8 +84,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="document-open">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="document-open" resource="../qrc/resources.qrc">
+          <normaloff>:/img/open.png</normaloff>:/img/open.png</iconset>
         </property>
        </widget>
       </item>
@@ -113,8 +113,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="document-save">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="document-save" resource="../qrc/resources.qrc">
+          <normaloff>:/img/save.png</normaloff>:/img/save.png</iconset>
         </property>
        </widget>
       </item>
@@ -142,8 +142,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="document-save-as">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="document-save-as" resource="../qrc/resources.qrc">
+          <normaloff>:/img/saveAs.png</normaloff>:/img/saveAs.png</iconset>
         </property>
        </widget>
       </item>
@@ -171,8 +171,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="view-refresh" resource="../qrc/resources.qrc">
+          <normaloff>:/img/reload.png</normaloff>:/img/reload.png</iconset>
         </property>
        </widget>
       </item>
@@ -210,8 +210,8 @@
          </size>
         </property>
         <property name="icon">
-         <iconset theme="media-playback-start">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="media-playback-start" resource="../qrc/resources.qrc">
+          <normaloff>:/img/run.png</normaloff>:/img/run.png</iconset>
         </property>
        </widget>
       </item>
@@ -242,8 +242,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="media-playback-stop">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="media-playback-stop" resource="../qrc/resources.qrc">
+          <normaloff>:/img/stop.png</normaloff>:/img/stop.png</iconset>
         </property>
        </widget>
       </item>
@@ -300,8 +300,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="edit-clear">
-          <normaloff>.</normaloff>.</iconset>
+         <iconset theme="edit-clear" resource="../qrc/resources.qrc">
+          <normaloff>:/img/clear.png</normaloff>:/img/clear.png</iconset>
         </property>
        </widget>
       </item>
@@ -458,7 +458,7 @@
         <item row="3" column="1">
          <widget class="QSlider" name="horizontalSliderSmartclean">
           <property name="maximum">
-           <number>10000</number>
+           <number>1000</number>
           </property>
           <property name="value">
            <number>50</number>
@@ -480,11 +480,14 @@
         </item>
         <item row="1" column="2">
          <widget class="QCheckBox" name="checkBoxSpheres">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Spheres</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -520,7 +523,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>27</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuKilo">
@@ -623,7 +626,8 @@
   </action>
   <action name="actionClear">
    <property name="icon">
-    <iconset theme="edit-clear"/>
+    <iconset theme="edit-clear">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>&amp;Clear</string>

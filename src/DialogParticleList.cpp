@@ -50,5 +50,10 @@ namespace Kilo
     {
         close();
     }
+    void DialogParticleList::on_pushButtonAdd_clicked()
+    {
+        ;
+    }
 }
+
 

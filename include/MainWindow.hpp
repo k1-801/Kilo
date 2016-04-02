@@ -76,6 +76,7 @@ namespace Kilo
 
     public slots:
             void on_runnerStateChanged(bool);
+            void close();
 
         signals:
             void open(QString);
@@ -85,6 +86,7 @@ namespace Kilo
             void stop();
             void clear();
             void changeZoom(long double);
+            void quit();
     };
 }
 

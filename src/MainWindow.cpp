@@ -33,6 +33,7 @@ namespace Kilo
         ui->setupUi(this);
         ui->retranslateUi(this);
 
+        // menu options
         connect(ui->actionOpen,   &QAction::triggered, this, &MainWindow::_open);
         connect(ui->actionSave,   &QAction::triggered, this, &MainWindow::_save);
         connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::_saveAs);
@@ -43,8 +44,9 @@ namespace Kilo
         Core  * c = &Core::getInstance();
         Runner* r = &Runner::getInstance();
         WidgetModel* m = ui->widgetModel;
-        connect(this, &MainWindow::destroyed,    r,    &Runner     ::stop);
-        connect(this, &MainWindow::destroyed,    c,    &Core       ::quit);
+        //connect(this, &MainWindow::destroyed,    r,    &Runner     ::stop);
+        //connect(this, &MainWindow::destroyed,    c,    &Core       ::quit);
+        connect(this, &MainWindow::quit,         c,    &Core       ::quit);
         connect(this, &MainWindow::run,          r,    &Runner     ::simRun);
         connect(this, &MainWindow::stop,         r,    &Runner     ::simStop);
         connect(this, &MainWindow::open,         c,    &Core       ::open);
@@ -174,4 +176,10 @@ namespace Kilo
                     ui->checkBoxTraectories->isChecked());
         emit changeZoom(Core::getInstance().getZoom());
     }
+
+    void MainWindow::close()
+    {
+        emit quit();
+    }
 }
+

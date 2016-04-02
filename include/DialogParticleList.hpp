@@ -44,6 +44,7 @@ namespace Kilo
             void on_particleList_itemActivated(QTreeWidgetItem*, int);
             void on_particle_cellChanged(int row, int column);
             void on_pushButtonClose_clicked();
+            void on_pushButtonAdd_clicked();
     };
 }
 

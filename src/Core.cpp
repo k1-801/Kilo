@@ -9,7 +9,7 @@
  */
 
 // Qt
-#include <QApplication>
+#include <QCoreApplication>
 #include <QFile>
 #include <QMessageBox>
 // HCL
@@ -56,10 +56,52 @@ namespace Kilo
 
             Runner  * r = &Runner  ::getInstance();
             r->moveToThread(&_runner);
-            connect(&_runner, &QThread::started,  r, &Runner    ::start);
-            connect(&_runner, &QThread::finished, r, &QObject   ::deleteLater);
-            connect(this,     &Core   ::stop,     r, &Runner    ::stop);
+            connect(&_runner, &QThread::started,  r,    &Runner ::start);
+            connect(&_runner, &QThread::finished, r,    &QObject::deleteLater);
+            connect(r,        &Runner ::finished, this, &Core   ::runnerFinished);
+            connect(this,     &Core   ::start,    r,    &Runner ::simRun);
+            connect(this,     &Core   ::stop,     r,    &Runner ::stop);
             _runner.start();
+
+            int i;
+            bool opened = false, autostart = false;
+            QStringList args = QCoreApplication::arguments();
+            for(i = 1; i < args.size(); ++i)
+            {
+                QString arg = args[i];
+                if(!opened && !arg.startsWith("--"))
+                {
+                    open(arg);
+                    opened = true;
+                    continue;
+                }
+                if(arg == "--autostart")
+                {
+                    autostart = true;
+                    continue;
+                }
+                if(arg == "--noautostart")
+                {
+                    autostart = false;
+                    continue;
+                }
+                if(arg == "--precision")
+                {
+                    ++i;
+                    if(i >= args.size() || !(_precision = arg.toDouble()))
+                        error(tr("Failed to set precision"));
+                }
+                if(arg == "--zoom")
+                {
+                    ++i;
+                    if(i >= args.size() || !(_zoom = arg.toDouble()))
+                        error(tr("Failed to set zoom"));
+                }
+            }
+            if(autostart)
+            {
+                emit start();
+            }
         }
         CATCH("Core::run");
     }
@@ -68,6 +110,7 @@ namespace Kilo
     bool Core::isDrawingSpheres    (){return _spheres;}
     bool Core::isDrawingTraectories(){return _traectories;}
     bool Core::isSmartClean        (){return _smartclean;}
+
     int   Core::getShadow    (){return _shadow;}
     float Core::getPrecision (){return _precision;}
     float Core::getZoom      (){return _zoom;}
@@ -167,8 +210,17 @@ namespace Kilo
         _zoom      = pow(1.1, _z_orig);
     }
 
+    void Core::runnerFinished()
+    {
+        _runner.exit();
+        _runner.wait();
+    }
+
     void Core::quit()
     {
         emit stop();
+        _runner.wait();
+        //_runner.exit();
+        QCoreApplication::exit();
     }
 }

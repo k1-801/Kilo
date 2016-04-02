@@ -84,8 +84,12 @@ namespace Kilo
             void save(QString);
             void quit();
 
+        private slots:
+            void runnerFinished();
+
         signals:
             void stop();
+            void start();
     };
 }
 
